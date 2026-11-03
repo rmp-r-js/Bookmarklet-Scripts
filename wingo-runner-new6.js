@@ -5,8 +5,7 @@
   var PROXY_BASE = 'https://wingoproxy.shekhawatsarita85.workers.dev';
   var PROXY_HISTORY = PROXY_BASE + '/api/history?limit=100';
   var PROXY_RUN = PROXY_BASE + '/run';
-  var PYTHON_BASE = 'https://wingo-prediction-py.onrender.com';
-  var PYTHON_JOB_ID = '34199904';
+  var PYTHON_BASE = 'https://vault-celebrity-legislation-budget.trycloudflare.com';
   var NUMBERS_NEEDED = 100;
 
   var IMG = 'https://pdftoimgjss.vercel.app/logo.svg';
@@ -244,7 +243,7 @@
     var conf = ((d.confidence || 0) * 100).toFixed(1);
     var roundDisplay = d.round ? String(d.round).slice(-6) : '—';
 
-    // Votes (multi-window only)
+    // Votes (Ensemble)
     var votesHtml = '';
     if (d.votes && Array.isArray(d.votes) && d.votes.length > 0) {
       var bigVotes = d.votes.filter(function (v) { return String(v).toLowerCase() === 'big'; }).length;
@@ -255,9 +254,8 @@
     // Strategy tag
     var strategyHtml = '';
     if (d.strategy) {
-      var tag = d.strategy.replace('multi_window_ensemble', 'multi-window');
-      if (d.windows_used) tag += ' (' + d.windows_used.join('/') + ')';
-      strategyHtml = '<div style="font-size:9px;color:rgba(235,235,245,0.35);text-align:center;margin-top:4px;letter-spacing:0.3px">' + tag + '</div>';
+      var tag = d.strategy.replace(/_/g, ' ');
+      strategyHtml = '<div style="font-size:9px;color:rgba(235,235,245,0.35);text-align:center;margin-top:4px;letter-spacing:0.3px;text-transform:uppercase">' + tag + '</div>';
     }
 
     PB.innerHTML =
@@ -318,7 +316,8 @@
 
       log('predicting round ' + nextRound.slice(-6) + '...', '#0A84FF', 'fa-brain');
 
-      var predRes = await fetch(PYTHON_BASE + '/predict/' + PYTHON_JOB_ID, {
+      // Naya Endpoint (without Job ID)
+      var predRes = await fetch(PYTHON_BASE + '/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ numbers: trimmed })
@@ -375,7 +374,7 @@
       // Wait for D1 propagation
       await new Promise(function (r) { setTimeout(r, 3000); });
 
-      // Predict regardless (stale data better than nothing)
+      // Predict
       await fetchAndPredict();
     } catch (e) {
       log('/run network error: ' + e.message, '#FF453A', 'fa-xmark');
@@ -399,7 +398,7 @@
   sCd();
   log('Auto-runner started', '#FF9F0A', 'fa-rocket');
   log('Python: ' + PYTHON_BASE, 'rgba(235,235,245,0.5)', 'fa-server');
-  log('Job: ' + PYTHON_JOB_ID, 'rgba(235,235,245,0.5)', 'fa-microchip');
+  log('Model: XGBoost + LSTM', 'rgba(235,235,245,0.5)', 'fa-microchip');
   log('Numbers needed: ' + NUMBERS_NEEDED, 'rgba(235,235,245,0.5)', 'fa-hashtag');
 
   // Fire immediately on load, then schedule
