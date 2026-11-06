@@ -2,8 +2,8 @@
   'use strict';
 
   // ===== CONFIG =====
-  var PROXY_RUN = 'https://wingoproxy.sekhawatsarita85.workers.dev/run';
-  var PROXY_HISTORY = 'https://wingoproxy.sekhawatsarita85.workers.dev/api/history?limit=100'; // 100 needed for ensemble
+  var PROXY_RUN = 'https://wingoproxy.shekhawatsarita85.workers.dev/run';
+  var PROXY_HISTORY = 'https://wingoproxy.shekhawatsarita85.workers.dev/api/history?limit=100'; // 100 needed for ensemble
   
   var API_J0RO = 'https://wingo-prediction-j0ro.onrender.com/predict';
   var API_WTR = 'https://wtr-prediction.onrender.com/predict'; 
